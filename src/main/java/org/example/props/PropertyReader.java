@@ -24,6 +24,36 @@ public class PropertyReader {
             return null;
         }
     }
+    public static String getUserForH2(){
+        try(InputStream inputStream=PropertyReader.class.getClassLoader()
+                .getResourceAsStream("application.properties")){
+            Properties prop=new Properties();
+            if(inputStream==null){
+                System.out.println("Unable to find application properties!");
+                return null;
+            }
+            prop.load(inputStream);
+            return "" +prop.getProperty("h2.db.user");
+        } catch (IOException ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+    public static String getPasswordH2(){
+        try(InputStream inputStream=PropertyReader.class.getClassLoader()
+                .getResourceAsStream("application.properties")){
+            Properties prop=new Properties();
+            if(inputStream==null){
+                System.out.println("Unable to find application properties!");
+                return null;
+            }
+            prop.load(inputStream);
+            return "" +prop.getProperty("h2.db.password");
+        } catch (IOException ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
     public static String getConnectionURLforPostrgres(){
         try(InputStream inputStream=PropertyReader.class.getClassLoader()
                 .getResourceAsStream("application.properties")){

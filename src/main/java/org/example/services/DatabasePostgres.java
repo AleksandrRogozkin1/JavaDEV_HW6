@@ -1,6 +1,7 @@
 package org.example.services;
 
 import org.example.props.PropertyReader;
+import org.flywaydb.core.Flyway;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,6 +18,7 @@ public class DatabasePostgres {
             String postgresURL = PropertyReader.getConnectionURLforPostrgres();
             this.PostgresConnection= DriverManager.getConnection(postgresURL,
                     PropertyReader.getUserForPostgres(),PropertyReader.getPasswordForPostgres());
+            flywayMigration(postgresURL,PropertyReader.getUserForPostgres(),PropertyReader.getPasswordForPostgres());
         }catch (SQLException ex){
             throw new RuntimeException("Connection exception!") ;
         }
@@ -43,6 +45,10 @@ public class DatabasePostgres {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+    public void flywayMigration(String connectionURL,String user,String password){
+        Flyway flyway = Flyway.configure().dataSource(connectionURL, user, password).load();
+        flyway.migrate();
     }
 
 }
